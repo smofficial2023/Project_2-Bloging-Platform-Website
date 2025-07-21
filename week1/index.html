@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login Page Of Blogging Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+    </style>
+</head>
+<body class="h-screen flex justify-center items-center">
+  <div class="h-[620px] w-[600px] border-[25px] border-transparent max-w-[600px] w-full bg-white/ rounded-2xl shadow-xl p-8 backdrop-filter backdrop-blur-md">
+    <div class="text-center">
+      <h2 class="mb-3 text-gray-800 font-semibold text-[35px]">Welcome Back</h2>
+      <p class="mb-6 text-gray-600 text-[28px]">Log in to blogaRythm</p>
+      <form id="loginForm">
+        <div class="mb-6 text-left">
+          <label class="block mb-2 font-medium text-gray-700 text-[24px]">Email Address</label>
+          <input type="email" id="email" placeholder="Enter your email" required 
+                 class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-[20px]" />
+        </div>
+        <div class="mb-6 text-left">
+          <label class="block mb-2 font-medium text-gray-700 text-[24px]">Password</label>
+          <div class="relative">
+            <input type="password" id="password" placeholder="Enter your password" required 
+                   class="w-full p-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-[20px]" />
+            <span id="togglePassword" class="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 text-lg">&#128065;</span>
+          </div>
+        </div>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 w-full border-none rounded-lg text-[20px]base font-medium cursor-pointer transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" onclick="window.open('mainpage.html')">
+          Sign In
+        </button>
+        <p class="mt-6 text-[20px] text-gray-600">Don't have an account? <a href="signup.html" class="text-[20px] blue-600 hover:text-blue-800 font-medium no-underline transition-colors duration-200">Create Account</a></p>
+    </div>
+  </div>
+  <script>
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordField = document.getElementById("password");
+
+        togglePassword.addEventListener("click", () => {
+            const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+            passwordField.setAttribute("type", type);
+            togglePassword.textContent = type === "password" ? "👁️" : "🙈";
+        });
+
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+            return;
+        }
+
+        // Simulate login
+        alert("Login Successful!");
+        // Redirect or integrate with your JWT API here
+        });
+    </script>
+</body>
+</html>
