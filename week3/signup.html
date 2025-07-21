@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | blogaRythm</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body class="bg-cover bg-center bg-no-repeat min-h-screen flex items-center justify-center custom-background-image">
+
+  <div class="h-[870px] w-[600px] border-[25px] border-transparent max-w-[670px] w-full bg-opacity-0 rounded-2xl shadow-xl p-8">
+    <h1 class="text-[35px] font-bold text-center text-indigo-800 mb-6">blogaRythm</h1>
+    <h2 class="text-[25px] font-bold text-center text-yellow-800 mb-6">Create Your Account</h2>
+    <form id="signupForm" class="space-y-5">
+      <!-- Name -->
+      <div>
+        <label class="block text-[22px] font-medium text-yellow-700">Full Name</label>
+        <input type="text" id="name" required class="w-full mt-1 p-3 text-[19px] border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-[22px] font-medium text-yellow-700">Email Address</label>
+        <input type="email" id="email" required class="w-full mt-1 p-3 text-[19px] border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label class="block text-[22px] font-medium text-yellow-700">Password</label>
+        <input type="password" id="password" required minlength="6" class="w-full mt-1 p-3 text-[19px] border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+      <!-- Field of Interest -->
+      <div>
+        <label class="block text-[22px] font-medium text-yellow-700">Field of Interest</label>
+        <select id="interest" required class="w-full mt-1 p-3 text-[19px] border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="" disabled selected>Select your interest</option>
+          <option value="tech">Technology</option>
+          <option value="lifestyle">Lifestyle</option>
+          <option value="travel">Travel</option>
+          <option value="food">Food</option>
+          <option value="finance">Finance</option>
+        </select>
+      </div>
+
+      <!-- Age -->
+      <div>
+        <label class="block text-[25px] font-medium text-green-700">Age</label>
+        <input type="number" id="age" min="13" required class="w-full mt-1 p-3 text-[19px] border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition duration-300" onclick="window.open('mainpage.html')">
+        Sign Up
+      </button>
+    </form>
+
+    <p class="mt-5 text-center text-[22px] text-grey-600">
+      Already have an account? <a href="index.html" class="text-blue-500 hover:underline">Login here</a>
+    </p>
+  </div>
+
+  <!-- JS for basic validation alert -->
+  <script>
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      alert(`Welcome to BlogSphere, ${name}! A confirmation has been sent to ${email}.`);
+      this.reset();
+    });
+  </script>
+</body>
+</html>
