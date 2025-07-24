@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlust Chronicles - Travel Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .blog-image {
+            height: 250px;
+            object-fit: cover;
+        }
+        .ql-editor {
+            min-height: 200px;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-compass text-3xl text-indigo-600 mr-3"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">Wanderlust Chronicles</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="text-gray-600 hover:text-indigo-600 transition-colors">Home</a>
+                    <a href="#blogs" class="text-gray-600 hover:text-indigo-600 transition-colors">Blogs</a>
+                    <a href="#write" class="text-gray-600 hover:text-indigo-600 transition-colors">Write</a>
+                    <a href="#about" class="text-gray-600 hover:text-indigo-600 transition-colors">About</a>
+                </div>
+                <button onclick="toggleWriteModal()" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors">
+                    <i class="fas fa-pen mr-2"></i>Write Blog
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="animate-float">
+                <i class="fas fa-globe-americas text-6xl mb-6"></i>
+            </div>
+            <h2 class="text-5xl font-bold mb-4">Explore the World</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">Discover amazing destinations, hidden gems, and travel stories from around the globe. Share your own adventures with fellow wanderers.</p>
+            <div class="flex justify-center space-x-4">
+                <button onclick="scrollToSection('blogs')" class="bg-white text-indigo-600 px-8 py-3 rounded-full hover:bg-gray-100 transition-colors font-semibold">
+                    Read Blogs
+                </button>
+                <button onclick="toggleWriteModal()" class="border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-indigo-600 transition-colors font-semibold">
+                    Start Writing
+                </button>
+            </div>
+            <div class="relative">
+                <button onclick="toggleMenu('heroMenu')" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="heroMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
+                    <div class="py-1">
+                        <a href="mainpage.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-microchip mr-3"></i>Technology
+                        </a>
+                        <a href="lifestyleblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-spa mr-3"></i>LifeStyle
+                        </a>
+                        <a href="travelblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-plane-departure mr-3"></i>Travel
+                        </a>
+                        <a href="foodblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-utensils mr-3"></i>Food
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100">
+                            <i class="fas fa-chart-line mr-3"></i>Finance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Blog Grid -->
+    <section id="blogs" class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h3 class="text-4xl font-bold text-gray-800 mb-4">Latest Adventures</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Immerse yourself in captivating travel stories and discover your next destination through the eyes of fellow explorers.</p>
+            </div>
+            
+            <div id="blogGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Default blogs will be inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Write Blog Modal -->
+    <div id="writeModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6 border-b">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-2xl font-bold text-gray-800">Write Your Travel Story</h3>
+                        <button onclick="toggleWriteModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <form id="blogForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Blog Title</label>
+                            <input type="text" id="blogTitle" placeholder="Enter your blog title..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Featured Image URL</label>
+                            <input type="url" id="blogImage" placeholder="https://example.com/image.jpg" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Author Name</label>
+                            <input type="text" id="blogAuthor" placeholder="Your name..." class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                            <input type="text" id="blogLocation" placeholder="Where did you travel?" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Blog Content</label>
+                            <div id="editor" class="bg-white"></div>
+                        </div>
+                        
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" onclick="toggleWriteModal()" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+                                <i class="fas fa-save mr-2"></i>Publish Blog
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-compass text-2xl text-indigo-400 mr-3"></i>
+                        <h4 class="text-xl font-bold">Wanderlust Chronicles</h4>
+                    </div>
+                    <p class="text-gray-400">Sharing travel stories and inspiring wanderers worldwide.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Quick Links</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#home" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#blogs" class="hover:text-white transition-colors">Travel Blogs</a></li>
+                        <li><a href="#write" class="hover:text-white transition-colors">Write Blog</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About Us</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Categories</h5>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Adventure Travel</li>
+                        <li>Cultural Experiences</li>
+                        <li>Food & Cuisine</li>
+                        <li>Photography</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Connect</h5>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl text-gray-400 hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Wanderlust Chronicles. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Quill editor
+        let quill;
+        
+        // Default blog data
+        const defaultBlogs = [
+            {
+                title: "Discovering the Hidden Temples of Kyoto",
+                image: "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                author: "Sristi De",
+                location: "Kyoto, Japan",
+                date: "March 15, 2025",
+                excerpt: "Journey through the mystical bamboo forests and ancient temples of Kyoto, where every corner holds centuries of history and spiritual wonder.",
+                content: "<p>Walking through the bamboo groves of Arashiyama at dawn, I discovered a side of Kyoto that few tourists ever see. The morning mist danced between towering bamboo stalks, creating an otherworldly atmosphere that transported me back in time.</p><p>Hidden among these natural cathedrals are temples that have stood for over a thousand years, each telling stories of monks, emperors, and pilgrims who sought enlightenment in these sacred spaces.</p>"
+            },
+            {
+                title: "Northern Lights Adventure in Iceland",
+                image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                author: "Nado Eich",
+                location: "Reykjavik, Iceland",
+                date: "February 28, 2025",
+                excerpt: "Chasing the aurora borealis across Iceland's dramatic landscape, from volcanic beaches to glacier lagoons under the dancing northern lights.",
+                content: "<p>The first time I saw the northern lights dance across Iceland's midnight sky, I understood why ancient civilizations believed they were messages from the gods. Standing on the black volcanic beaches of Reynisfjara, with the aurora painting the sky in ethereal greens and purples, I felt humbled by nature's magnificent display.</p><p>Our journey took us from the geothermal wonders of the Blue Lagoon to the diamond-studded ice caves of Vatnajökull, each location offering a unique perspective on this Nordic wonderland.</p>"
+            },
+            {
+                title: "Culinary Journey Through Tuscany",
+                image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                author: "Bivek Yadav",
+                location: "Tuscany, Italy",
+                date: "January 20, 2025",
+                excerpt: "From vineyard-to-table experiences to hidden trattorias, discover the authentic flavors and traditions of Tuscany's countryside.",
+                content: "<p>The rolling hills of Tuscany aren't just a feast for the eyes – they're home to some of the world's most authentic culinary experiences. In a small family-run vineyard near Montalcino, I learned the ancient art of pasta-making from Nonna Maria, whose hands have been crafting pici for over sixty years.</p><p>Each meal became a celebration of local ingredients: wild boar ragu simmered for hours, fresh porcini mushrooms foraged from oak forests, and Chianti Classico that captured the essence of sun-soaked hillsides in every sip.</p>"
+            }
+        ];
+
+        // Initialize the page
+        function initializePage() {
+            renderBlogs();
+            initializeQuill();
+        }
+
+        // Initialize Quill editor
+        function initializeQuill() {
+            quill = new Quill('#editor', {
+                theme: 'snow',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        ['blockquote', 'code-block'],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                },
+                placeholder: 'Share your travel story...'
+            });
+        }
+
+        // Render blogs
+        function renderBlogs() {
+            const blogGrid = document.getElementById('blogGrid');
+            const blogs = JSON.parse(localStorage.getItem('travelBlogs') || '[]');
+            const allBlogs = [...defaultBlogs, ...blogs];
+            
+            blogGrid.innerHTML = allBlogs.map(blog => `
+                <article class="bg-white rounded-2xl shadow-lg overflow-hidden card-hover">
+                    <img src="${blog.image}" alt="${blog.title}" class="w-full blog-image">
+                    <div class="p-6">
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fas fa-map-marker-alt mr-2 text-indigo-500"></i>
+                            <span>${blog.location}</span>
+                            <span class="mx-2">•</span>
+                            <span>${blog.date}</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">${blog.title}</h4>
+                        <p class="text-gray-600 mb-4 line-clamp-3">${blog.excerpt}</p>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mr-3">
+                                    <i class="fas fa-user text-indigo-600 text-xs"></i>
+                                </div>
+                                <span class="text-sm text-gray-700 font-medium">${blog.author}</span>
+                            </div>
+                            <button onclick="readBlog('${encodeURIComponent(JSON.stringify(blog))}')" class="text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+                                Read More <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Toggle write modal
+        function toggleWriteModal() {
+            const modal = document.getElementById('writeModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden') && quill) {
+                quill.setText('');
+                document.getElementById('blogForm').reset();
+            }
+        }
+
+        // Handle blog form submission
+        document.getElementById('blogForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('blogTitle').value;
+            const image = document.getElementById('blogImage').value;
+            const author = document.getElementById('blogAuthor').value;
+            const location = document.getElementById('blogLocation').value;
+            const content = quill.root.innerHTML;
+            
+            if (!title || !author || !location || quill.getText().trim() === '') {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            const newBlog = {
+                title,
+                image: image || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                author,
+                location,
+                date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+                excerpt: quill.getText().substring(0, 150) + '...',
+                content
+            };
+            
+            // Save to localStorage
+            const existingBlogs = JSON.parse(localStorage.getItem('travelBlogs') || '[]');
+            existingBlogs.unshift(newBlog);
+            localStorage.setItem('travelBlogs', JSON.stringify(existingBlogs));
+            
+            // Close modal and refresh blogs
+            toggleWriteModal();
+            renderBlogs();
+            
+            // Show success message
+            showNotification('Blog published successfully!', 'success');
+        });
+
+        // Read blog function
+        function readBlog(blogData) {
+            const blog = JSON.parse(decodeURIComponent(blogData));
+            alert(`Reading: ${blog.title}\n\nThis would typically open the full blog post in a new page or modal. Content preview:\n\n${blog.excerpt}`);
+        }
+
+        // Smooth scroll function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} shadow-lg transform transition-all duration-300 translate-x-full`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+        function toggleMenu(menuId) {
+            // Hide all menus first
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== menuId) menu.classList.add('hidden');
+            });
+
+            // Toggle the requested one
+            const menu = document.getElementById(menuId);
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenuOrButton = event.target.closest('.dropdown-menu') || event.target.closest('button[onclick^="toggleMenu"]');
+            if (!isClickInsideMenuOrButton) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
+            }
+        });
+        // Initialize page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
