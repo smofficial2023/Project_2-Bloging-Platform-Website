@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flavor Chronicles - Food Blog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.7/quill.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .food-card {
+            transition: all 0.3s ease;
+        }
+        .blog-image {
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .blog-image:hover {
+            transform: scale(1.05);
+        }
+        #editor {
+            min-height: 200px;
+        }
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="hero-gradient text-white shadow-lg">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="text-2xl font-bold">
+                    <i class="fas fa-utensils mr-2"></i>
+                    Flavor Chronicles
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#home" class="hover:text-yellow-300 transition duration-300">Home</a>
+                    <a href="#blogs" class="hover:text-yellow-300 transition duration-300">Blogs</a>
+                    <a href="#write" class="hover:text-yellow-300 transition duration-300">Write</a>
+                    <a href="#about" class="hover:text-yellow-300 transition duration-300">About</a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Hero Section -->
+        <div class="container mx-auto px-6 py-16 text-center">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Flavor Chronicles</h1>
+            <p class="text-xl mb-8 opacity-90">Discover amazing recipes, culinary adventures, and food stories from around the world</p>
+            <button onclick="scrollToSection('write')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105">
+                Start Writing
+            </button>
+            <div class="relative">
+                <button onclick="toggleMenu('heroMenu')" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <!-- Dropdown Menu -->
+                <div id="heroMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50 hidden">
+                    <div class="py-1">
+                        <a href="mainpage.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-microchip mr-3"></i>Technology
+                        </a>
+                        <a href="lifestyleblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-spa mr-3"></i>LifeStyle
+                        </a>
+                        <a href="travelblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-plane-departure mr-3"></i>Travel
+                        </a>
+                        <a href="foodblogs.html" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors">
+                            <i class="fas fa-utensils mr-3"></i>Food
+                        </a>
+                        <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors border-t border-gray-100">
+                            <i class="fas fa-chart-line mr-3"></i>Finance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Featured Blogs Section -->
+    <section id="blogs" class="py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Featured Food Stories</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8" id="blogGrid">
+                <!-- Blog posts will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Write New Blog Section -->
+    <section id="write" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Share Your Culinary Story</h2>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-50 rounded-lg shadow-lg p-8">
+                    <form id="blogForm">
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Blog Title</label>
+                            <input type="text" id="blogTitle" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 transition duration-300" placeholder="Enter your delicious blog title...">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Featured Image URL</label>
+                            <input type="url" id="blogImage" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 transition duration-300" placeholder="https://example.com/food-image.jpg">
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Blog Content</label>
+                            <div id="editor" class="bg-white border border-gray-300 rounded-lg"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 transform hover:scale-105">
+                                <i class="fas fa-paper-plane mr-2"></i>
+                                Publish Blog
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <div class="text-2xl font-bold mb-4">
+                <i class="fas fa-utensils mr-2"></i>
+                Flavor Chronicles
+            </div>
+            <p class="text-gray-400 mb-6">Bringing food lovers together through stories and recipes</p>
+            <div class="flex justify-center space-x-6 text-2xl">
+                <a href="#" class="hover:text-yellow-400 transition duration-300"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="hover:text-yellow-400 transition duration-300"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="hover:text-yellow-400 transition duration-300"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="hover:text-yellow-400 transition duration-300"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button -->
+    <button onclick="scrollToSection('write')" class="floating-btn bg-yellow-500 hover:bg-yellow-600 text-white p-4 rounded-full shadow-lg transition duration-300 transform hover:scale-110">
+        <i class="fas fa-pen text-xl"></i>
+    </button>
+
+    <script>
+        // Initialize Quill Editor
+        const quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Share your culinary adventures, recipes, and food stories...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['blockquote', 'code-block'],
+                    ['link', 'image'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Default blog posts data
+        const defaultBlogs = [
+            {
+                id: 1,
+                title: "The Art of Perfect Pasta: A Journey Through Italy",
+                image: "https://img.traveltriangle.com/blog/wp-content/uploads/2017/11/cover20-400x225.jpg",
+                content: "Discover the secrets behind authentic Italian pasta making. From selecting the right flour to mastering the perfect al dente texture, this culinary journey will transform your kitchen into a little piece of Italy. Learn traditional techniques passed down through generations of Italian nonnas.",
+                date: "2025-07-20",
+                readTime: "8 min read"
+            },
+            {
+                id: 2,
+                title: "Street Food Adventures: Bangkok's Hidden Gems",
+                image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: "Embark on a flavorful expedition through Bangkok's bustling street food scene. From spicy som tam to creamy coconut desserts, explore the vibrant tastes and aromas that make Thai street food legendary. Get insider tips on the best stalls and must-try dishes.",
+                date: "2025-07-18",
+                readTime: "12 min read"
+            },
+            {
+                id: 3,
+                title: "Homemade Sourdough: From Starter to Slice",
+                image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: "Master the ancient art of sourdough bread making with this comprehensive guide. Learn how to create and maintain your starter, achieve the perfect crust, and develop complex flavors through proper fermentation. Includes troubleshooting tips for common issues.",
+                date: "2025-07-15",
+                readTime: "15 min read"
+            },
+            {
+                id: 4,
+                title: "Plant-Based Paradise: Colorful Buddha Bowls",
+                image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                content: "Create nutritious and Instagram-worthy Buddha bowls that nourish both body and soul. Discover the art of balancing textures, colors, and flavors while incorporating seasonal vegetables, grains, and plant-based proteins for the ultimate healthy meal.",
+                date: "2025-07-12",
+                readTime: "10 min read"
+            }
+        ];
+
+        // Store all blogs (default + user created)
+        let allBlogs = [...defaultBlogs];
+
+        // Function to render blog posts
+        function renderBlogs() {
+            const blogGrid = document.getElementById('blogGrid');
+            blogGrid.innerHTML = '';
+
+            allBlogs.forEach(blog => {
+                const blogCard = document.createElement('div');
+                blogCard.className = 'food-card card-hover bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300';
+                
+                blogCard.innerHTML = `
+                    <div class="overflow-hidden">
+                        <img src="${blog.image}" alt="${blog.title}" class="blog-image w-full">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                            <span><i class="far fa-calendar mr-1"></i>${formatDate(blog.date)}</span>
+                            <span><i class="far fa-clock mr-1"></i>${blog.readTime}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 line-clamp-2">${blog.title}</h3>
+                        <p class="text-gray-600 mb-4 line-clamp-3">${blog.content}</p>
+                        <button onclick="readBlog(${blog.id})" class="text-purple-600 hover:text-purple-800 font-semibold transition duration-300">
+                            Read More <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                `;
+                
+                blogGrid.appendChild(blogCard);
+            });
+        }
+
+        // Function to format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        // Function to handle reading a blog (placeholder)
+        function readBlog(blogId) {
+            const blog = allBlogs.find(b => b.id === blogId);
+            alert(`Opening: "${blog.title}"\n\nThis would open the full blog post in a real application.`);
+        }
+
+        // Function to scroll to section
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Handle form submission
+        document.getElementById('blogForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('blogTitle').value.trim();
+            const imageUrl = document.getElementById('blogImage').value.trim();
+            const content = quill.getText().trim();
+            
+            if (!title || !content) {
+                alert('Please fill in both title and content fields.');
+                return;
+            }
+            
+            // Create new blog post
+            const newBlog = {
+                id: allBlogs.length + 1,
+                title: title,
+                image: imageUrl || 'https://images.unsplash.com/photo-1495147466623-c09330894ae5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+                content: content.substring(0, 200) + (content.length > 200 ? '...' : ''),
+                date: new Date().toISOString().split('T')[0],
+                readTime: Math.max(1, Math.ceil(content.split(' ').length / 200)) + ' min read'
+            };
+            
+            // Add to blogs array
+            allBlogs.unshift(newBlog);
+            
+            // Re-render blogs
+            renderBlogs();
+            
+            // Clear form
+            document.getElementById('blogTitle').value = '';
+            document.getElementById('blogImage').value = '';
+            quill.setContents([]);
+            
+            // Show success message and scroll to blogs
+            alert('Blog published successfully!');
+            scrollToSection('blogs');
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBlogs();
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        function toggleMenu(menuId) {
+            // Hide all menus first
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                if (menu.id !== menuId) menu.classList.add('hidden');
+            });
+
+            // Toggle the requested one
+            const menu = document.getElementById(menuId);
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
+        }
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenuOrButton = event.target.closest('.dropdown-menu') || event.target.closest('button[onclick^="toggleMenu"]');
+            if (!isClickInsideMenuOrButton) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => menu.classList.add('hidden'));
+            }
+        });
+    </script>
+</body>
+</html>
